@@ -9,7 +9,10 @@ namespace web_rest.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Produces("application/json")]
-    public class UserDetailsController(IUserService userService): ControllerBase
+    public class UserDetailsController(
+        IUserService userService, 
+        ILogger<UserDetailsController> logger
+    ): ControllerBase
     {
 
         [HttpGet]
@@ -50,6 +53,7 @@ namespace web_rest.Controllers
             }
             catch (Exception ex)
             {
+                logger.LogError($"Failed to update user by the id {user.Id}");
                 return BadRequest(ex.Message);
             }
         }
