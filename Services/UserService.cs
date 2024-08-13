@@ -17,11 +17,17 @@ namespace web_rest.Services
             return user;
         }
 
-        public async Task<UserDetails?> FindByEmailAndPassword(string email, string password) =>
+        public async Task<UserDetails?> FindByEmailAndPasswordAsync(string email, string password) =>
             await context.Users.FirstOrDefaultAsync(user =>
                 user.Email == email &&
                 user.Password == password
             );
+
+        public async Task<UserDetails?> FindByEmailAsync(string email) =>
+            await context.Users.FirstOrDefaultAsync(x => x.Email == email);
+
+        public async Task<UserDetails?> FindByEmailFirstLettersAsync(string emailFirstLetters) =>
+            await context.Users.FirstOrDefaultAsync(x => x.Email.StartsWith(emailFirstLetters));
 
         public async Task<UserDetails?> FindByIdAsync(int id) =>
             await context.Users.FindAsync(id);
