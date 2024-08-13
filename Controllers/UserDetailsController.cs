@@ -36,17 +36,17 @@ namespace web_rest.Controllers
         [HttpGet("email")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<ApiResponse<UserDetails?>>> FilterByEmail([FromQuery] string emailFirstLetters)
+        public async Task<ActionResult<ApiResponse<UserDetails>>> FilterByEmail([FromQuery] string emailFirstLetters)
         {
             var user = await userService.FindByEmailFirstLettersAsync(emailFirstLetters);
             return user != null
-                ? new ApiResponse<UserDetails?>()
+                ? new ApiResponse<UserDetails>()
                     {
                         Data = user,
                         Success = true,
                         StatusCode = StatusCodes.Status200OK
                     }
-                : new ApiResponse<UserDetails?>()
+                : new ApiResponse<UserDetails>()
                     {
                         Success = false,
                         StatusCode = StatusCodes.Status404NotFound,
