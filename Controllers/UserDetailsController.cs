@@ -13,9 +13,11 @@ namespace web_rest.Controllers
     {
 
         [HttpGet]
+        [ResponseCache(Duration = 60)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<List<UserDetails>>> GetAll() =>
             Ok(await userService.GetUsersAsync());
+
 
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -81,14 +83,14 @@ namespace web_rest.Controllers
             ImmutableList<string> emailAndPassword = [email, password];
             if (emailAndPassword.Any(string.IsNullOrEmpty))
             {
-                return BadRequest("Email or password is invalid");
+                return BadRequest(new { error = "Email or password is invalid" });
             }
             var user = await userService.FindByEmailAndPassword(email, password);
             if (user == null)
             {
-                return Unauthorized("User doesnt exist by this email / password");
+                return Unauthorized(new { error = "User doesnt exist by this email / password" });
             }
-            return Ok("Authenticated");
+            return Ok(new { message = "Authenticated" });
         }
             
     }
